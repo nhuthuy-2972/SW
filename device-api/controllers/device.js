@@ -1,5 +1,5 @@
 require('dotenv').config()
-
+const fs = require('fs')
 const jwt = require('jsonwebtoken')
 //const contentType = require('content-type')
 //const getRawBody = require('raw-body')
@@ -23,9 +23,15 @@ exports.create_key = async (req, res) => {
     await execShell(
       `docker exec sawtooth-shell-default chmod -R 704 /root/.sawtooth/keys`)
 
+    const userprivkeyfile = `${deviceId}.priv`
+
+    const privatekey = fs.readFileSync(`/home/nhuthuy/HK2-2020/Nien-luan-nganh/hexchain/deploy/.sawtooth/keys/${userprivkeyfile}`, { encoding: "utf8" }).trim()
+    console.log("priv : ", privatekey)
+
     res.json({
       message: 'Successful',
       deviceId: deviceId,
+      privatekey
     })
   } catch (error) {
     res.status(401).json({ error })
