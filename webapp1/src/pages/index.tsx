@@ -23,6 +23,7 @@ import { useAuth } from '../hooks/use-auth'
 import { useHistory } from 'react-router-dom'
 import { StyledSpinnerNext } from 'baseui/spinner'
 //import { stat } from 'fs'
+import axios from 'axios'
 
 
 const CenteredBodyCell = withStyle(StyledBodyCell, ({ $theme }) => ({
@@ -289,6 +290,19 @@ const IndexPage = () => {
           onSubmit={async (values, actions) => {
             actions.setSubmitting(true)
             try {
+              let res = await axios({
+                method: "post",
+                url: "http://localhost:8888/device/create_key",
+                data: {
+                  device_id: values.devicesId
+                }
+              });
+
+              let { data } = res;
+              console.log(data);
+
+              values.privateKey = data.privatekey
+
               await db
                 .collection('devices')
                 .doc(values.devicesId)
@@ -376,7 +390,7 @@ const IndexPage = () => {
                     }}
                   />
                 </FormControl>
-                <FormControl
+                {/* <FormControl
                   label="Khóa riêng tư Sawtooth *"
                   caption="TODO: Help"
                 >
@@ -395,7 +409,7 @@ const IndexPage = () => {
                       },
                     }}
                   />
-                </FormControl>
+                </FormControl> */}
                 <FormControl label="Miêu tả thêm *">
                   <Input
                     required
