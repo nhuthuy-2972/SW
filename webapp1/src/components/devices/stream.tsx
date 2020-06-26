@@ -4,22 +4,25 @@ import { useStyletron } from 'baseui'
 import { Button } from 'baseui/button'
 import { Settings, Zap, Activity } from 'react-feather'
 import moment from 'moment';
-import Moment from 'react-moment';
+//import Moment from 'react-moment';
 import axios from 'axios'
 import { useParams, Redirect } from "react-router-dom";
-import {
-  ResponsiveContainer,
-  LineChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Line,
-} from 'recharts'
-import { clear } from 'console'
-import { useAuth } from '../../hooks/use-auth'
 import { db } from '../../hooks/use-auth'
 import Display from './display'
+// import { useAuth } from '../../hooks/use-auth'
+// import {
+//   ResponsiveContainer,
+//   LineChart,
+//   CartesianGrid,
+//   XAxis,
+//   YAxis,
+//   Tooltip,
+//   Line,
+// } from 'recharts'
+// import { clear } from 'console'
+
+//import { db } from '../../hooks/use-auth'
+
 // moment.locale('vi')
 moment().zone(7)
 const StreamDevices: React.FC<{}> = () => {
@@ -27,7 +30,7 @@ const StreamDevices: React.FC<{}> = () => {
   const [data, setData] = React.useState(() => ({ timestamp: "", temperature: 0, humidity: 0 }))
   const { id } = useParams()
   const [history, sethistory] = React.useState(Object)
-
+  const [fields, setfields] = React.useState(Array);
 
 
   React.useEffect(() => {
@@ -69,10 +72,32 @@ const StreamDevices: React.FC<{}> = () => {
   }, [])
 
 
-  // if ()
 
-  console.log("data", data)
-  console.log("history", history[0])
+  React.useEffect(() => {
+    console.log("set fields")
+    const getdata = async () => {
+      let docs = db.collection('devices').doc(id);
+
+      await docs.get().then(async doc => {
+        if (!doc.exists) {
+          console.log('No such document!');
+        } else {
+          console.log('Document data:', doc.get('data_fields'));
+          let field = doc.get('data_fields')
+          console.log(typeof field)
+          setfields(field)
+        }
+      })
+        .catch(err => {
+          console.log('Error getting document', err);
+        });
+    }
+    getdata()
+  }, [])
+
+
+  // console.log("data", data)
+  // console.log("history", history[0])
 
   return (
     < div className={css({})} >
@@ -113,8 +138,11 @@ const StreamDevices: React.FC<{}> = () => {
           gridTemplateColumns: '0.35fr 1fr',
         })}
       >
-        <Display name="temperature" data={data} history={history}></Display>
-        <Display name="humidity" data={data} history={history}></Display>
+        {
+          fields!.map((ite: any, i) => { return <Display key={Math.random() * 10 + i} field={ite} data={data} history={history} ></Display> })
+        }
+        {/* <Display name="temperature" data={data} history={history}></Display>
+        <Display name="humidity" data={data} history={history}></Display> */}
         {/* <div
           className={css({
             backgroundColor: theme.colors.mono100,

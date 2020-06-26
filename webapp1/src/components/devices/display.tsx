@@ -38,7 +38,7 @@ moment().zone(7)
 // }
 
 
-const Display = ({ name, data, history }: any) => {
+const Display = ({ field, data, history }: any) => {
   const [css, theme] = useStyletron()
   return (
     <>
@@ -66,7 +66,7 @@ const Display = ({ name, data, history }: any) => {
           </div>
           <div>
             <div className={css({ ...theme.typography.font400 })}>
-              Độ ẩm
+              {`${field.field_display} (${field.field_unit})`}
             </div>
             <div
               className={css({
@@ -90,7 +90,7 @@ const Display = ({ name, data, history }: any) => {
             textAlign: 'center',
           })}
         >
-          {data[name]}
+          {data[field.field_name]}
         </div>
       </div>
       <div
@@ -117,7 +117,7 @@ const Display = ({ name, data, history }: any) => {
           </div>
           <div>
             <div className={css({ ...theme.typography.font400 })}>
-              Nhiệt độ
+              {field.field_display}
             </div>
           </div>
         </div>
@@ -149,7 +149,7 @@ const Display = ({ name, data, history }: any) => {
               <Tooltip />
               <Line
                 type="linear"
-                dataKey={name}
+                dataKey={field.field_name}
                 stroke="#8884d8"
                 fill="#8884d8"
               />
