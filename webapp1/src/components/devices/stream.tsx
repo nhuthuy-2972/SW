@@ -19,7 +19,7 @@ import {
 import { clear } from 'console'
 import { useAuth } from '../../hooks/use-auth'
 import { db } from '../../hooks/use-auth'
-// import db from ''
+import Display from './display'
 // moment.locale('vi')
 moment().zone(7)
 const StreamDevices: React.FC<{}> = () => {
@@ -113,7 +113,9 @@ const StreamDevices: React.FC<{}> = () => {
           gridTemplateColumns: '0.35fr 1fr',
         })}
       >
-        <div
+        <Display name="temperature" data={data} history={history}></Display>
+        <Display name="humidity" data={data} history={history}></Display>
+        {/* <div
           className={css({
             backgroundColor: theme.colors.mono100,
             ...theme.borders.border200,
@@ -342,7 +344,7 @@ const StreamDevices: React.FC<{}> = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-        </div>
+        </div> */}
       </div>
     </div >
   )
