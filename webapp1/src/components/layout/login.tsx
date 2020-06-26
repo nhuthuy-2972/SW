@@ -19,20 +19,23 @@ export const LoginForm: React.FC<{}> = () => {
     },
     onSubmit: async (values, actions) => {
       actions.setSubmitting(true)
-      try {
-        const v = await fbase
-          .auth()
-          .signInWithEmailAndPassword(values.email, values.password)
+      fbase.auth().setPersistence(fbase.auth.Auth.Persistence.SESSION)
+        .then(async function () {
+          const v = await fbase
+            .auth()
+            .signInWithEmailAndPassword(values.email, values.password)
 
-        toaster.positive(`Auth with ${v.user!.email}`, {
-          autoHideDuration: 2000,
+          toaster.positive(`Auth with ${v.user!.email}`, {
+            autoHideDuration: 2000,
+          })
+          actions.setSubmitting(false)
+          return v;
         })
-        actions.setSubmitting(false)
-      } catch (error) {
-        toaster.warning(error.message, {
-          autoHideDuration: 5000,
-        })
-      }
+        .catch(function (error) {
+          toaster.warning(error.message, {
+            autoHideDuration: 5000,
+          })
+        });
     },
   })
   return (

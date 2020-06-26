@@ -71,21 +71,24 @@ function useProvideAuth() {
   }
 
   const signin = async (email: string, password: string) => {
-    try {
-      const v = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(async function () {
+        const v = await firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
 
-      toaster.positive(`Auth with ${v.user!.email}`, {
-        autoHideDuration: 5000,
+        toaster.positive(`Auth with ${v.user!.email}`, {
+          autoHideDuration: 5000,
+        })
+        return v;
       })
-    } catch (error) {
-      toaster.warning(error.message, {
-        autoHideDuration: 5000,
-      })
-    }
+      .catch(function (error) {
+        toaster.warning(error.message, {
+          autoHideDuration: 5000,
+        })
+      });
+
   }
-
   const signout = () => {
     //history.push('/')
     return firebase.auth().signOut()
