@@ -47,7 +47,16 @@ const StreamDevices: React.FC<{}> = () => {
           }
         }).then(data => {
           console.log("Postgres", data.data.rows)
-          sethistory(data.data.rows)
+          let res = [...data.data.rows]
+          let maps = res.map((el) => {
+            let first = el['time'].indexOf(' ')
+            let last = el['time'].indexOf(',')
+            let hour = el['time'].substring(first + 1, last)
+            return { ...el, hour }
+          })
+          console.log(maps)
+          // sethistory(data.data.rows)
+          sethistory(maps)
         })
           .catch(er => { console.log("hhh", er) })
       })
@@ -192,7 +201,7 @@ const StreamDevices: React.FC<{}> = () => {
             <ResponsiveContainer>
               <LineChart
                 data={history}
-                syncId="imp"
+                //syncId="imp"
                 margin={{
                   top: 10,
                   right: 30,
@@ -203,7 +212,7 @@ const StreamDevices: React.FC<{}> = () => {
                 <CartesianGrid vertical={false} />
                 <XAxis dataKey="time" />
                 <YAxis
-                  ticks={[0, 20, 40, 60]}
+                  // ticks={[0, 20, 40, 60]}
                   axisLine={false}
                   tickFormatter={value => value}
                 />
@@ -307,7 +316,7 @@ const StreamDevices: React.FC<{}> = () => {
             <ResponsiveContainer>
               <LineChart
                 data={history}
-                syncId="imp"
+                //syncId="imp"
                 margin={{
                   top: 10,
                   right: 30,
@@ -318,7 +327,7 @@ const StreamDevices: React.FC<{}> = () => {
                 <CartesianGrid vertical={false} />
                 <XAxis dataKey="time" />
                 <YAxis
-                  ticks={[0, 20, 40, 60]}
+                  //ticks={[0, 20, 40, 60]}
                   axisLine={false}
                   tickFormatter={value => value}
                 />
