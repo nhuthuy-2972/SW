@@ -16,26 +16,15 @@ import { type } from 'os';
 
 moment().zone(7)
 
-// type Data = {
-//   deviceId?: string,
-//   timestamp?: string,
-//   temperature?: number,
-//   humidity?: number,
-//   batery?: number
-// }
 
-// type item = {
-//   hour?: string,
-//   timme?: string,
-//   temperature?: number,
-//   humidity?: number
-// }
+const CustomizedAxisTick = ({ x, y, stroke, payload }: any) => {
 
-// type Props = {
-//   name: any,
-//   data: Data,
-//   history: Array<item>
-// }
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={0} dx={20} dy={16} textAnchor="end" fill="#000000" fontWeight='bold' fontSize={10} transform="rotate(-20)">{payload.value}</text>
+    </g>
+  );
+}
 
 
 const Display = ({ field, data, history }: any) => {
@@ -135,13 +124,12 @@ const Display = ({ field, data, history }: any) => {
                 top: 10,
                 right: 30,
                 left: 0,
-                bottom: 0,
+                bottom: 30,
               }}
             >
               <CartesianGrid vertical={false} />
-              <XAxis dataKey="hour" />
+              <XAxis dataKey="hour" tickFormatter={value => value} tick={<CustomizedAxisTick />} />
               <YAxis
-                //ticks={[0, 20, 40, 60, 80, 100]}
                 axisLine={false}
                 tickFormatter={value => value}
               />
@@ -150,8 +138,8 @@ const Display = ({ field, data, history }: any) => {
               <Line
                 type="linear"
                 dataKey={field.field_name}
-                stroke="#8884d8"
-                fill="#8884d8"
+                stroke="#ec157a"
+                fill="#ec157a"
               />
             </LineChart>
           </ResponsiveContainer>

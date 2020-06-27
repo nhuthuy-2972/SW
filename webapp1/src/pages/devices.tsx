@@ -42,7 +42,7 @@ const DevicesPage: React.FC<{}> = () => {
         margin: `${theme.sizing.scale600} auto`,
       })}
     >
-      {check == true ? <StreamDevices /> : <IndexPage />}
+      {check == true ? <StreamDevices /> : React.Fragment}
     </div>
   )
 }

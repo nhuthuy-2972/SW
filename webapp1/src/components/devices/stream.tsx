@@ -46,7 +46,8 @@ const StreamDevices: React.FC<{}> = () => {
           method: 'post',
           url: 'http://localhost:8877/api/getdata',
           data: {
-            device_id: id
+            device_id: id,
+            timestamp: value.timestamp
           }
         }).then(data => {
           console.log("Postgres", data.data.rows)
